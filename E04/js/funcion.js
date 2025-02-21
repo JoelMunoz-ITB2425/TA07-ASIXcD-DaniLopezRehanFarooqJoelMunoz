@@ -1,46 +1,145 @@
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("JavaScript carregat correctament.");
+function calcular() {
+    let energia = parseFloat(document.getElementById('energia').value);
+    let plaques = parseFloat(document.getElementById('plaques').value);
+    let aigua = parseFloat(document.getElementById('aigua').value);
+    let consumibles = parseFloat(document.getElementById('consumibles').value);
+    let neteja = parseFloat(document.getElementById('neteja').value);
 
-    let links = document.querySelectorAll("nav ul li a");
-    links.forEach(link => {
-        link.addEventListener("mouseover", function() {
-            this.style.color = "orange";
-        });
-        link.addEventListener("mouseout", function() {
-            this.style.color = "white";
-        });
-    });
+    let energiaGenerada = plaques * 400; 
+    let consumElectricAny = Math.max(energia - energiaGenerada, 0);
+    let consumElectricCurs = (consumElectricAny / 12) * 10;
+    let consumAiguaAny = aigua;
+    let consumAiguaCurs = (aigua / 12) * 10;
+    let consumConsumiblesAny = consumibles;
+    let consumConsumiblesCurs = (consumibles / 12) * 10;
+    let consumNetejaAny = neteja;
+    let consumNetejaCurs = (neteja / 12) * 10;
 
-    // Simulació de tendències temporals
-    function generarDades(variacioBase, estacionalitat) {
-        let dades = [];
-        for (let mes = 0; mes < 12; mes++) {
-            let variabilitat = Math.random() * 10;
-            let valor = variacioBase + variabilitat + (estacionalitat[mes] || 0);
-            dades.push(valor.toFixed(2));
-        }
-        return dades;
+    document.getElementById('resultats').innerHTML = `
+        <p>Consum elèctric pròxim any: ${consumElectricAny.toFixed(2)} kWh</p>
+        <p>Consum elèctric durant el curs: ${consumElectricCurs.toFixed(2)} kWh</p>
+        <p>Consum d’aigua pròxim any: ${consumAiguaAny.toFixed(2)} m³</p>
+        <p>Consum d’aigua durant el curs: ${consumAiguaCurs.toFixed(2)} m³</p>
+        <p>Consum de consumibles pròxim any: ${consumConsumiblesAny.toFixed(2)} unitats</p>
+        <p>Consum de consumibles durant el curs: ${consumConsumiblesCurs.toFixed(2)} unitats</p>
+        <p>Consum de productes de neteja pròxim any: ${consumNetejaAny.toFixed(2)} litres</p>
+        <p>Consum de productes de neteja durant el curs: ${consumNetejaCurs.toFixed(2)} litres</p>
+    `;
+}
+
+function resetear() {
+    document.getElementById('energia').value = "";
+    document.getElementById('plaques').value = "";
+    document.getElementById('aigua').value = "";
+    document.getElementById('consumibles').value = "";
+    document.getElementById('neteja').value = "";
+    document.getElementById('resultats').innerHTML = "";  // Borra los resultados
+}
+// Validate user input
+function validarEntrada(valor) {
+    if (isNaN(valor) || valor < 0) {
+        return false;
     }
+    return true;
+}
 
-    // Exemples de generació de dades
-    let consumEnergia = generarDades(200, [30, 25, 20, 15, 10, 5, 5, 10, 15, 20, 25, 30]);
-    let consumAigua = generarDades(100, [10, 15, 20, 25, 30, 35, 40, 35, 30, 25, 20, 15]);
+// Convert kWh to Joules
+function convertirKWhAJoules(kWh) {
+    return kWh * 3600000;
+}
 
-    console.log("Consum Energia (kWh):", consumEnergia);
-    console.log("Consum Aigua (litres):", consumAigua);
+// Calculate cost savings
+function calcularEstalvi(energiaConsumida, preuPerKWh) {
+    return energiaConsumida * preuPerKWh;
+}
 
-    // Calculadora de consums
-    document.getElementById("calcular").addEventListener("click", function() {
-        let tipus = document.getElementById("tipus-consum").value;
-        let mesos = parseInt(document.getElementById("temps").value);
-        let resultat = 0;
-        
-        if (tipus === "energia") {
-            resultat = consumEnergia.slice(0, mesos).reduce((acc, val) => acc + parseFloat(val), 0);
-        } else if (tipus === "aigua") {
-            resultat = consumAigua.slice(0, mesos).reduce((acc, val) => acc + parseFloat(val), 0);
+// Display summary of energy savings
+function mostrarResumEstalvi(energiaConsumida, estalvi) {
+    let resum = `Has consumit ${energiaConsumida} kWh i has estalviat ${estalvi} euros.`;
+    document.getElementById("resum-estalvi").textContent = resum;
+}
+
+// Compare energy consumption between different months
+function compararConsum(mes1, mes2) {
+    if (mes1 > mes2) {
+        return "El consum del primer mes és superior.";
+    } else if (mes1 < mes2) {
+        return "El consum del segon mes és superior.";
+    } else {
+        return "El consum dels dos mesos és igual.";
+    }
+}
+
+// Generate a chart of energy consumption
+function generarGraficaConsum(dades) {
+    let ctx = document.getElementById('grafica-consum').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'Juny', 'Juliol', 'Agost', 'Setembre', 'Octubre', 'Novembre', 'Desembre'],
+            datasets: [{
+                label: 'Consum Energètic (kWh)',
+                data: dades,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
         }
-
-        document.getElementById("resultat").textContent = `Consum estimat: ${resultat.toFixed(2)}`;
     });
+}
+
+// Suggest energy-saving tips
+function suggerirConsellsEstalvi() {
+    let consells = [
+        "Apaga els llums quan no els necessitis.",
+        "Desendolla els aparells electrònics quan no els facis servir.",
+        "Utilitza bombetes LED de baix consum.",
+        "Ajusta el termòstat a una temperatura moderada.",
+        "Utilitza electrodomèstics eficients energèticament."
+    ];
+    let consellAleatori = consells[Math.floor(Math.random() * consells.length)];
+    document.getElementById("consell-estalvi").textContent = consellAleatori;
+}
+
+// Log user interactions for analytics
+function registrarInteraccio(accio) {
+    console.log(`Interacció registrada: ${accio}`);
+}
+
+// Example usage
+document.addEventListener("DOMContentLoaded", function() {
+    // Validate input example
+    let inputValido = validarEntrada(50);
+    console.log(`Entrada vàlida: ${inputValido}`);
+
+    // Convert kWh to Joules example
+    let joules = convertirKWhAJoules(10);
+    console.log(`10 kWh en Joules: ${joules}`);
+
+    // Calculate cost savings example
+    let estalvi = calcularEstalvi(100, 0.15);
+    console.log(`Estalvi: ${estalvi} euros`);
+
+    // Display summary example
+    mostrarResumEstalvi(100, estalvi);
+
+    // Compare consumption example
+    let comparacio = compararConsum(120, 100);
+    console.log(comparacio);
+
+    // Generate chart example
+    let dadesConsum = [100, 120, 130, 110, 90, 80, 70, 60, 50, 40, 30, 20];
+    generarGraficaConsum(dadesConsum);
+
+    // Suggest energy-saving tips example
+    suggerirConsellsEstalvi();
+
+    // Log interaction example
+    registrarInteraccio("Usuari ha calculat l'estalvi energètic.");
 });
