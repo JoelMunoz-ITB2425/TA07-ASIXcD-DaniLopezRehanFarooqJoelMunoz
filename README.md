@@ -1,1 +1,0 @@
-# TA07-ASIXcD-DaniLopezRehanFarooqJoelMunoz
