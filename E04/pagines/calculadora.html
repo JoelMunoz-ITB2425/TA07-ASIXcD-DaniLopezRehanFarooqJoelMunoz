@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora d'Estalvi Energètic</title>
+    <link rel="stylesheet" href="/E04/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Calculadora d'Estalvi Energètic</h1>
+        <nav>
+            <ul>
+                <li><a href="/E04/index.html">Home</a></li>
+                <li><a href="/E04/pagines/mobils.html">Mòbils a l'Aula</a></li>
+                <li><a href="/E04/pagines/energia.html">Energia</a></li>
+                <li><a href="/E04/pagines/factures.html">Factures</a></li>
+                <li><a href="/E04/pagines/aigua.html">Aigua</a></li>
+                <li><a href="/E04/pagines/calculadora.html">Calculadora</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1>Calculadora d'Estalvi Energètic</h1>
+    <div class="container">
+        <label for="energia">Consum elèctric actual (kWh/any):</label>
+        <input type="number" id="energia" value="10000">
+
+        <label for="plaques">Nombre de plaques solars:</label>
+        <input type="number" id="plaques" value="0">
+
+        <label for="aigua">Consum d’aigua actual (m³/any):</label>
+        <input type="number" id="aigua" value="500">
+
+        <label for="consumibles">Consumibles d’oficina actuals (unitats/any):</label>
+        <input type="number" id="consumibles" value="1000">
+
+        <label for="neteja">Productes de neteja actuals (litres/any):</label>
+        <input type="number" id="neteja" value="200">
+        
+        <button onclick="calcular()">Calcular Estalvi</button>
+        <button onclick="resetear()">Restablir Valors</button>
+    </div>
+
+    <h2>Resultats</h2>
+    <div id="resultats"></div>
+
+    <h2>Consells per Reduir el Consum</h2>
+    <div id="consells">
+        <p><strong>Electricitat:</strong> Utilitzar bombetes LED i apagar els dispositius electrònics quan no s’utilitzin.</p>
+        <p><strong>Aigua:</strong> Instal·lar airejadors en les aixetes i reparar fuites ràpidament.</p>
+        <p><strong>Consumibles d’oficina:</strong> Fomentar l’ús de documents digitals i imprimir només quan sigui necessari.</p>
+        <p><strong>Productes de neteja:</strong> Utilitzar alternatives ecològiques i evitar l'ús excessiu de productes químics.</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/E04/js/funcion.js"></script>
+</body>
+</html>
