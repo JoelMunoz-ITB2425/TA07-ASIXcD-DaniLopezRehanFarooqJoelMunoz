@@ -106,18 +106,26 @@ label, input {
     margin-bottom: 10px;
 }
 button {
-    background: #28a745;
+    background: linear-gradient(135deg, #28a745, #218838);
     color: white;
-    border: outset;
-    padding: 10px;
+    border: none;
+    padding: 12px 20px;
     width: 90%;
-    border-radius: 50px;
+    border-radius: 25px;
     cursor: pointer;
     margin: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
 }
+
 button:hover {
-    background: #218838;
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    transform: scale(1.05);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
 }
+
 #resultats, #consells {
     margin-top: 20px;
     background: white;
@@ -130,7 +138,7 @@ button:hover {
 /* Estilo del título */
 h2 {
     cursor: pointer;
-    background: linear-gradient(to right, #0077b6, #00a8e8);
+    background: linear-gradient(to right, #29f500, #00a8e8);
     color: white;
     padding: 10px;
     text-align: center;
@@ -274,3 +282,4 @@ input {
     margin: 5px auto;
     text-align: center; /* Opcional: centra el texto dentro del input */
 }
+
